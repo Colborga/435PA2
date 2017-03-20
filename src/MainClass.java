@@ -33,8 +33,8 @@ public class MainClass {
         //TF job
         Job job1 = Job.getInstance(conf);
         job1.setJarByClass(MainClass.class);
-        job1.setMapperClass(AuthorWordCountMapper.class);
-        job1.setReducerClass(AuthorWordCountReducer.class);
+        job1.setMapperClass(TFMapper.class);
+        job1.setReducerClass(TFReducer.class);
         job1.setOutputKeyClass(Text.class);
         job1.setOutputValueClass(Text.class);
         job1.setInputFormatClass(TextInputFormat.class);

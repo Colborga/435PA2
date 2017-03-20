@@ -5,7 +5,7 @@ import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class AuthorWordCountReducer extends Reducer<Text,Text,Text,Text>{
+public class TFReducer extends Reducer<Text,Text,Text,Text>{
 	MultipleOutputs<Text, Text> mos;
 
 	@Override

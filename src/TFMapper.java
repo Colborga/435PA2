@@ -5,7 +5,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 
-public class AuthorWordCountMapper extends Mapper<LongWritable, Text, Text, Text>{
+public class TFMapper extends Mapper<LongWritable, Text, Text, Text>{
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
 		//String[] Line = value.toString().split("\n");
 		String[] lineSplit = value.toString().split("\\s+");
