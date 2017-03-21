@@ -3,39 +3,63 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class IDFreducer extends Reducer<Text,Text,Text,DoubleWritable>{
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+		//Create a List of all Authors
 
-		String hold = "";
+		ArrayList<String> usedAuthors = new ArrayList<>();
+		ArrayList<String> ListofAuthors = new ArrayList<>();
+
+
+		String mapperValue = "";
 
 		int count = 0;
 		for(Text termVal : values){
-			count++;
-			hold += termVal.toString() + "<===>";
+			if(termVal.toString().startsWith("&")){
+				String[] split = termVal.toString().split("&");
+				ListofAuthors = new ArrayList<>(Arrays.asList(split[1].split(("\\s+"))));
+			}
+			else{
+				if(values.iterator().hasNext()) {
+					mapperValue += termVal.toString() + "<===>";
+					usedAuthors.add(termVal.toString().split("\\s+")[0]);
+					count++;
+
+				}else{
+					mapperValue += termVal.toString();
+					usedAuthors.add(termVal.toString().split("\\s+")[0]);
+					count++;
+				}
+			}
+
+
 		}
-
-		//where count is the number of authors that used this term
-
-		//String[] hold = values.toString().split("\\s+");
-		//String Author = hold[0];
-
-
-		String[] AuthorsHold = hold.split("<===>");
-		for(String s: AuthorsHold){
-			String[] sHold = s.split("\\s+");
+		double idfVal = 0;
+		
+		for(String plz : mapperValue.split("<===>")) {
+			String[] sHold = plz.split("\\s+");
 			String Author = sHold[0];
 			double TFval = Double.parseDouble(sHold[1]);
 			double AuthorCount = Double.parseDouble(sHold[2]);
 
-			double idfVal = Math.log10(AuthorCount / count);
-
+			idfVal = Math.log10(AuthorCount / count);
 			context.write(new Text(Author + " " + key), new DoubleWritable(idfVal * TFval));
+			//ListofAuthors.remove(Author);
+		}
+
+		for (String authorName : ListofAuthors) {
+			if (!usedAuthors.contains(authorName)) {
+				context.write(new Text(authorName + " " + key), new DoubleWritable(idfVal * .5));
+			}
 		}
 
 
 
-		//double tfval = Double.parseDouble(hold[0]);
+		//double tfval = Double.parseDouble(mapperValue[0]);
 
 
 		//context.write(new Text(Author + " " + key + " " + AuthorCount), new IntWritable(count));
