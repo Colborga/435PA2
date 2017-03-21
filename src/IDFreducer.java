@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class IDFreducer extends Reducer<Text,Text,Text,DoubleWritable>{
+public class
+IDFreducer extends Reducer<Text,Text,Text,DoubleWritable>{
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 		//Create a List of all Authors
 
