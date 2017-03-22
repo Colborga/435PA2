@@ -16,7 +16,7 @@ public class IDFmapper extends Mapper<LongWritable, Text, Text, Text>{
         /*ArrayList<String>*/ String Authors = "";//new ArrayList<>();
         ArrayList<String>  authorhold = new ArrayList<>();
 
-        //if(value.toString().startsWith(":")){
+        if(value.toString().startsWith(":")){
             String[] firstSplit = value.toString().split(":");
 
             //String[] lineSplit = firstSplit[0].split("\\s+");
@@ -35,25 +35,25 @@ public class IDFmapper extends Mapper<LongWritable, Text, Text, Text>{
 //                }
 //            }
 
-            Authors = firstSplit[1].toString();
+            Authors = value.toString();
 
-            //context.write(new Text(Term), new Text(Authors));
+            context.write(new Text(Term), new Text(Authors));
            //context.write(new Text(Term), new Text("&"+ Authors));
 
-       // }
-       // else{
+        }
+        else{
 
-            String[] lineSplit = firstSplit[0].toString().split("\\s+");
+            String[] lineSplit = value.toString().split("\\s+");
             String Author = lineSplit[0];
             Term = lineSplit[1];
             double TFval = Double.parseDouble(lineSplit[2]);
             //int AuthorCount = Integer.parseInt(lineSplit[3]);
             authorhold = new ArrayList<>(Arrays.asList(Authors.split("\\s+")));
-            context.write(new Text(Term), new Text(Author + " " + TFval));
+            context.write(new Text(Term), new Text(Author + " " + TFval + " " + authorhold.size()));
 
 
 
-        //}
+        }
 
     }
 
