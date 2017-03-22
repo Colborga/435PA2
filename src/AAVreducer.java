@@ -13,7 +13,7 @@ public class AAVreducer extends Reducer<Text,DoubleWritable,Text, DoubleWritable
 
     public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
         //for(DoubleWritable d : values){
-            context.write(key,values.iterator().next());
+        context.write(key,values.iterator().next());
         //}
 
     }

@@ -29,7 +29,7 @@ public class AuthorCountMapper extends Mapper<LongWritable, Text, Text, Text>{
                 Term = lineSplit[2];
                 TFval = Double.parseDouble(lineSplit[3]);
 
-                context.write(new Text(dollar), new Text( Author + " " + Term + " " + TFval));
+                context.write(new Text(""), new Text( dollar + " " + Author + " " + Term + " " + TFval));
             }
 
         }

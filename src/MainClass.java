@@ -26,6 +26,8 @@ public class MainClass {
 
 
         Configuration conf = new Configuration();
+
+
 //        Job job=Job.getInstance(conf);
 //        job.setJarByClass(MainClass.class);
 //        job.setMapperClass(WordCountMapper.class);
@@ -54,7 +56,7 @@ public class MainClass {
 //        //MultipleOutputs.addNamedOutput(job1, "TFvalue" , TextOutputFormat.class, job.getOutputKeyClass(), job.getOutputValueClass());
 //
 //        job1.waitForCompletion(true);
-//
+
         //IDF job
         Job AuthorCount = Job.getInstance(conf);
         AuthorCount.setJarByClass(MainClass.class);
