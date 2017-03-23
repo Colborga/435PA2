@@ -1,13 +1,12 @@
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.filecache.DistributedCache;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
+import org.apache.hadoop.io.Text;
 import java.io.IOException;
 
 public class MainClass {
@@ -27,8 +26,8 @@ public class MainClass {
 
 
         Configuration conf = new Configuration();
-//
-//
+
+
 //        Job job=Job.getInstance(conf);
 //        job.setJarByClass(MainClass.class);
 //        job.setMapperClass(WordCountMapper.class);
@@ -58,7 +57,7 @@ public class MainClass {
 //
 //        job1.waitForCompletion(true);
 //
-        ////IDF job
+//
 //        Job AuthorCount = Job.getInstance(conf);
 //        AuthorCount.setJarByClass(MainClass.class);
 //        AuthorCount.setMapperClass(AuthorCountMapper.class);
@@ -72,27 +71,27 @@ public class MainClass {
 //
 //        AuthorCount.waitForCompletion(true);
 //
+//
 
-
-        //IDF job
-        DistributedCache.addCacheFile(new Path("/PA2outputAuthorCount/part-r-00000").toUri(), conf);
-        Job IDF = Job.getInstance(conf);
-        IDF.setJarByClass(MainClass.class);
-        IDF.setMapperClass(IDFmapper.class);
-        IDF.setReducerClass(IDFreducer.class);
-
-        IDF.addCacheArchive(new Path("/PA2outputAuthorCount/part-r-00000").toUri());
-        IDF.setOutputKeyClass(Text.class);
-        IDF.setOutputValueClass(Text.class);
-        IDF.setInputFormatClass(TextInputFormat.class);
-        IDF.setOutputFormatClass(TextOutputFormat.class);
-        FileInputFormat.setInputPaths(IDF, new Path(TF));
-        FileOutputFormat.setOutputPath(IDF, new Path(IDFOUT));
-
-        IDF.waitForCompletion(true);
+//        //IDF job
+//        DistributedCache.addCacheFile(new Path("/PA2outputAuthorCount/part-r-00000").toUri(), conf);
+//        Job IDF = Job.getInstance(conf);
+//        IDF.setJarByClass(MainClass.class);
+//        IDF.setMapperClass(IDFmapper.class);
+//        IDF.setReducerClass(IDFreducer.class);
+//        IDF.addCacheArchive(new Path("/PA2outputAuthorCount/part-r-00000").toUri());
+//        IDF.setOutputKeyClass(Text.class);
+//        IDF.setOutputValueClass(Text.class);
+//        IDF.setInputFormatClass(TextInputFormat.class);
+//        IDF.setOutputFormatClass(TextOutputFormat.class);
+//        FileInputFormat.setInputPaths(IDF, new Path(TF));
+//        FileOutputFormat.setOutputPath(IDF, new Path(IDFOUT));
+//
+//        IDF.waitForCompletion(true);
 
         //IDF job
         Job AAV = Job.getInstance(conf);
+        AAV.setNumReduceTasks(20);
         AAV.setJarByClass(MainClass.class);
         AAV.setMapperClass(TFIDFmapper.class);
         AAV.setReducerClass(TFIDFreducer.class);
@@ -102,6 +101,7 @@ public class MainClass {
         AAV.setOutputFormatClass(TextOutputFormat.class);
         FileInputFormat.setInputPaths(AAV, new Path(IDFOUT));
         FileOutputFormat.setOutputPath(AAV, new Path(TFIDFOUT));
+
 
         AAV.waitForCompletion(true);
 
