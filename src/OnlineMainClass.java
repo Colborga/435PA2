@@ -2,7 +2,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -11,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import java.io.IOException;
 
 public class OnlineMainClass {
-    private static final String UNIGRAM = "/PA2online";
+    private static final String UNIGRAM = "/PA2onlineUnigram";
     private static final String TF = "/PA2onlineTF";
     private static final String AUTHORCOUNT= "/PA2onlineAuthorCount";
     private static final String OnlineIDF= "/PA2onlineIDF";
@@ -27,34 +26,34 @@ public class OnlineMainClass {
 
 
         Configuration conf = new Configuration();
-
-        //////Unigram Job
-        Job OnlineUnigram = Job.getInstance(conf);
-        OnlineUnigram.setJarByClass(MainClass.class);
-        OnlineUnigram.setMapperClass(WordCountMapper.class);
-        OnlineUnigram.setReducerClass(WordCountReducer.class);
-        OnlineUnigram.setOutputKeyClass(Text.class);
-        OnlineUnigram.setOutputValueClass(Text.class);
-        OnlineUnigram.setInputFormatClass(TextInputFormat.class);
-        OnlineUnigram.setOutputFormatClass(TextOutputFormat.class);
-        FileInputFormat.setInputPaths(OnlineUnigram, new Path(args[0]));
-        FileOutputFormat.setOutputPath(OnlineUnigram, new Path(UNIGRAM));
-
-        OnlineUnigram.waitForCompletion(true);
-
-        /////TF job
-        Job OnlineTF = Job.getInstance(conf);
-        OnlineTF.setJarByClass(MainClass.class);
-        OnlineTF.setMapperClass(TFMapper.class);
-        OnlineTF.setReducerClass(TFReducer.class);
-        OnlineTF.setOutputKeyClass(Text.class);
-        OnlineTF.setOutputValueClass(Text.class);
-        OnlineTF.setInputFormatClass(TextInputFormat.class);
-        OnlineTF.setOutputFormatClass(TextOutputFormat.class);
-        FileInputFormat.setInputPaths(OnlineTF, new Path(UNIGRAM));
-        FileOutputFormat.setOutputPath(OnlineTF, new Path(TF));
-
-        OnlineTF.waitForCompletion(true);
+//
+//        //////Unigram Job
+//        Job OnlineUnigram = Job.getInstance(conf);
+//        OnlineUnigram.setJarByClass(MainClass.class);
+//        OnlineUnigram.setMapperClass(WordCountMapper.class);
+//        OnlineUnigram.setReducerClass(WordCountReducer.class);
+//        OnlineUnigram.setOutputKeyClass(Text.class);
+//        OnlineUnigram.setOutputValueClass(Text.class);
+//        OnlineUnigram.setInputFormatClass(TextInputFormat.class);
+//        OnlineUnigram.setOutputFormatClass(TextOutputFormat.class);
+//        FileInputFormat.setInputPaths(OnlineUnigram, new Path(args[0]));
+//        FileOutputFormat.setOutputPath(OnlineUnigram, new Path(UNIGRAM));
+////
+//        OnlineUnigram.waitForCompletion(true);
+//
+//        /////TF job
+//        Job OnlineTF = Job.getInstance(conf);
+//        OnlineTF.setJarByClass(MainClass.class);
+//        OnlineTF.setMapperClass(TFMapper.class);
+//        OnlineTF.setReducerClass(TFReducer.class);
+//        OnlineTF.setOutputKeyClass(Text.class);
+//        OnlineTF.setOutputValueClass(Text.class);
+//        OnlineTF.setInputFormatClass(TextInputFormat.class);
+//        OnlineTF.setOutputFormatClass(TextOutputFormat.class);
+//        FileInputFormat.setInputPaths(OnlineTF, new Path(UNIGRAM));
+//        FileOutputFormat.setOutputPath(OnlineTF, new Path(TF));
+//
+//        OnlineTF.waitForCompletion(true);
 
         //Calculated TF, Now smash this into the IDF that is stored in HDFS
 
@@ -74,6 +73,7 @@ public class OnlineMainClass {
 
         //IDF job
         Job TFIDF = Job.getInstance(conf);
+        TFIDF.setNumReduceTasks(20);
         TFIDF.setJarByClass(MainClass.class);
         TFIDF.setMapperClass(OnlineTFIDFmapper.class);
         TFIDF.setReducerClass(OnlineTFIDFreducer.class);

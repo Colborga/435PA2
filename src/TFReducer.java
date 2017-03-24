@@ -35,7 +35,7 @@ public class TFReducer extends Reducer<Text,Text,Text,Text>{
 
 		//this.mos.write("AuthorCount", NullWritable.get(), new Text("$ " + key + " " + mFTerm + " " + maxFreq));
 
-		context.write(new Text("$ " + key + " " + mFTerm + " " + maxFreq), new Text(""));
+		//context.write(new Text("$ " + key + " " + mFTerm + " " + maxFreq), new Text(""));
 		//4 terms "$" so that when you write this to a file you can count all of the lines that .split() = 4, thi		//this is that # of authors in the corpus
 
 		double TFval = 0;
