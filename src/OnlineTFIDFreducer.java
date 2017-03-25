@@ -43,6 +43,10 @@ public class OnlineTFIDFreducer extends Reducer<Text,Text,Text,DoubleWritable>{
                 context.write(new Text("OnlineAuthor" + " " + key), new DoubleWritable(idf * tf));
                 break;
             }
+            else if(tf == 0 && idf != 0 && (!values.iterator().hasNext())){
+                context.write(new Text("OnlineAuthor" + " " + key), new DoubleWritable(idf * .5));
+                break;
+            }
         }
 
         //Double TFIDF = new Double(tf * idf);
